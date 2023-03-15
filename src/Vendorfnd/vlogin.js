@@ -2,24 +2,102 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import Logo from "../warranty.png";
+import { useEffect, useState } from "react";
 //import {useNavigate} from 'react-router-dom';
 export default function Login() {
-  let navigate = useNavigate();
   
-  return(
-    <FormContainer> 
-    <form action=''>
-      <div className="brand">
-      <img src={Logo} alt="warranty.png"/>
-        <h1>GALLARIZE</h1>
-      </div>
-      <button type="button" onClick={() => {navigate('/vdashboard')}}>Log In With METAMASK Wallet</button>
-    </form>
-    </FormContainer> 
+  const [walletAddress, setWalletAddress] = useState("");
 
-  );
+  useEffect(() => {
+    getCurrentWalletConnected();
+    addWalletListener();
+  }, [walletAddress]);
+  let [account , setAccount]= useState("");
+
+  const connectWallet = async () => {
+    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+      try {
+        /* MetaMask is installed */
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        setWalletAddress(accounts[0]);
+        localStorage.setItem("walletAddress", accounts[0]); // store the address in local storage
+
+        console.log(accounts[0]);
+       
+       
+        } 
+      catch (err) {
+        console.error(err.message);
+      }
+    } else {
+      /* MetaMask is not installed */
+      console.log("Please install MetaMask");
+    }
+  };
+
+  const getCurrentWalletConnected = async () => {
+    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+      try {
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
+        if (accounts.length > 0) {
+          setWalletAddress(accounts[0]);
+          console.log(accounts[0]);
+          navigate('/vdashboard', {replace: true})
+        } else {
+          console.log("Connect to MetaMask using the Connect button");
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
+    } else {
+      /* MetaMask is not installed */
+      console.log("Please install MetaMask");
+    }
+  };
+
+  const addWalletListener = async () => {
+    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        setWalletAddress(accounts[0]);
+        console.log(accounts[0]);
+      });
+    } else {
+      /* MetaMask is not installed */
+      setWalletAddress("");
+      console.log("Please install MetaMask");
+    }
+  };
+
+
+//const navigate = useNavigate();
+
+//const handleClick = () => {
+  // 👇️ navigate programmatically
+  //navigate('/dashboard', {replace: true})
+//};
+let navigate = useNavigate();
+
+return(
+  <FormContainer> 
+  <form action=''>
+    <div className="brand">
+    <img src={Logo} alt="warranty.png"/>
+      <h1>GALLARIZE</h1>
+    </div>
+    <button type="button" onClick={connectWallet}>Log In With METAMASK Wallet</button>
+  </form>
+  </FormContainer> 
+
+);
 
 }
+
+
+
 const FormContainer = styled.div`
 height: 100vh;
   width: 100vw;

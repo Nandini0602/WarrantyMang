@@ -16,6 +16,7 @@ import Vaddp from './Vendorfnd/vaddp';
 import Vwarrantyp from './Vendorfnd/vwarrantyp';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
+  
   return (
     <Router>
     <Routes>
@@ -35,6 +36,7 @@ function App() {
     <Route path='vwarrantyp' element={<Vwarrantyp/>}/>
   </Routes>
   </Router>
+  
    
   );
 }
