@@ -16,8 +16,7 @@ export default function Login() {
         <h1>Welcome to GALLARIZE</h1>
       </div>
       <button type="button" onClick={() => {navigate('../vaddp')}}>Add Product</button>
-      <button type="button" onClick={() => {navigate('../vlogin')}}>Verify Problem</button>
-
+      
     </form>
     </FormContainer> 
 

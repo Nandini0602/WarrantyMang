@@ -48,14 +48,14 @@ export default function Login() {
           console.log(accounts[0]);
           navigate('/vdashboard', {replace: true})
         } else {
-          console.log("Connect to MetaMask using the Connect button");
+          alert("Connect to MetaMask using the Connect button");
         }
       } catch (err) {
         console.error(err.message);
       }
     } else {
       /* MetaMask is not installed */
-      console.log("Please install MetaMask");
+      alert("Please install MetaMask");
     }
   };
 
@@ -68,7 +68,7 @@ export default function Login() {
     } else {
       /* MetaMask is not installed */
       setWalletAddress("");
-      console.log("Please install MetaMask");
+      alert("Please install MetaMask");
     }
   };
 
